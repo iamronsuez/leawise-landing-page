@@ -7,7 +7,8 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
-
+import WhySection from "../components/why-section";
+import ContactSection from "../components/contact-section";
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
@@ -21,7 +22,8 @@ const LandingPage = () => {
             <div className="hidden md:flex items-center space-x-8 text-gray-600">
               <NavLink href="#features">¿Cómo funciona?</NavLink>
               <NavLink href="#pricing">Planes</NavLink>
-              <NavLink href="#contact">Contáctanos</NavLink>
+              <NavLink href="#contact-section">Contáctanos</NavLink>
+              <NavLink href="/about">Acerca de</NavLink>
               <button
                 type="button"
                 className="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-2 rounded-full font-medium"
@@ -49,16 +51,22 @@ const LandingPage = () => {
                 reportes en un solo lugar.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <button type="button" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-medium text-lg transition transform hover:scale-105">
+                <button
+                  type="button"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-medium text-lg transition transform hover:scale-105"
+                >
                   Comienza Gratis
                 </button>
-                <button type="button" className="group flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-600 px-8 py-4 rounded-xl font-medium text-lg border-2 transition">
+                <button
+                  type="button"
+                  className="group flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-600 px-8 py-4 rounded-xl font-medium text-lg border-2 transition"
+                >
                   Ver Demo
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition" />
                 </button>
               </div>
               <div className="flex items-center gap-4 text-sm text-gray-500">
-                <div className="flex -space-x-2">
+                <div className="flex -space-x-2 md:hidden">
                   {[1, 2, 3].map((i) => (
                     <img
                       key={i}
@@ -71,7 +79,7 @@ const LandingPage = () => {
                 <p>Más de 1,000 administradores confían en nosotros</p>
               </div>
             </div>
-            <div className="relative">
+            <div className="relative md:hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 rounded-3xl transform rotate-3" />
               <img
                 src="/api/placeholder/600/400"
@@ -132,6 +140,8 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      <WhySection />
 
       {/* Pricing */}
       <section className="py-20 bg-white" id="pricing">
@@ -198,17 +208,10 @@ const LandingPage = () => {
             <p className="text-xl text-blue-100 mb-8">
               Únete a más de 1,000 administradores que ya confían en Leawise
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button type="button" className="bg-white text-blue-600 px-8 py-4 rounded-xl font-medium text-lg hover:bg-blue-50 transition">
-                Agenda una Demo
-              </button>
-              <button type="button"  className="bg-blue-700 text-white px-8 py-4 rounded-xl font-medium text-lg hover:bg-blue-600 transition">
-                Prueba Gratis
-              </button>
-            </div>
           </div>
         </div>
       </section>
+      <ContactSection />
 
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-400 py-12">
@@ -240,20 +243,28 @@ const LandingPage = () => {
   );
 };
 
-const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
-  <a href={href} className="hover:text-blue-600 transition">
+const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({
+  href,
+  children,
+}) => (
+  <Link href={href} className="hover:text-blue-600 transition">
     {children}
-  </a>
+  </Link>
 );
 
 interface FeatureCardProps {
-  icon: React.ReactNode;
+  icon: React.ReactElement<React.SVGProps<SVGSVGElement>>;
   title: string;
   description: string;
   highlighted?: boolean;
 }
 
-const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, highlighted = false }) => (
+const FeatureCard: React.FC<FeatureCardProps> = ({
+  icon,
+  title,
+  description,
+  highlighted = false,
+}) => (
   <div
     className={`p-6 rounded-2xl transition-all duration-300 hover:shadow-xl ${
       highlighted ? "bg-blue-600 text-white" : "bg-white hover:bg-gray-50"
@@ -264,7 +275,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({ icon, title, description, hig
         highlighted ? "bg-blue-500" : "bg-blue-100"
       }`}
     >
-      {React.cloneElement(icon as React.ReactElement<React.SVGProps<SVGSVGElement>>, {
+      {React.cloneElement(icon, {
         className: `w-6 h-6 ${highlighted ? "text-white" : "text-blue-600"}`,
       })}
     </div>
@@ -325,7 +336,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
       ))}
     </ul>
     <button
-    type="button"
+      type="button"
       className={`w-full py-3 rounded-xl font-medium transition transform hover:scale-105 ${
         featured
           ? "bg-white text-blue-600 hover:bg-blue-50"
@@ -342,7 +353,8 @@ interface FooterColumnProps {
   links: string[];
 }
 
-const FooterColumn: React.FC<FooterColumnProps> = ({ title, links }) => (  <div>
+const FooterColumn: React.FC<FooterColumnProps> = ({ title, links }) => (
+  <div>
     <h3 className="text-lg font-bold text-white mb-4">{title}</h3>
     <ul className="space-y-2">
       {links.map((link) => (
